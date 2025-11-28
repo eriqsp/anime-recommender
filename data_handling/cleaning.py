@@ -1,8 +1,6 @@
 import pandas as pd
 import re
 import html
-from dotenv import load_dotenv
-import os
 from collections import Counter
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
@@ -17,7 +15,9 @@ class DataCleaner:
         self._first_stage_df()
         self._second_stage_df()
 
-        cols = ['text', 'genres_multi', 'tags_multi', 'studios_multi']
+        self.df['text'] = self.df['text'].astype(str).str.encode('latin-1', errors='replace').str.decode('utf-8', errors='replace')
+
+        cols = ['title', 'text', 'genres_multi', 'tags_multi', 'studios_multi']
         if self.add_numerical:
             cols += ['episodes', 'popularity']
         return self.df[cols]
@@ -94,16 +94,3 @@ class DataCleaner:
         s = re.sub(r"<[^>]+>", " ", s)
         s = re.sub(r"\s+", " ", s).strip()
         return s
-
-
-
-""" test """
-
-load_dotenv()
-
-dc = DataCleaner(os.getenv('PARQUET_FILENAME'), add_numerical=True)
-df = dc.final_stage_df()
-
-
-print()
-
