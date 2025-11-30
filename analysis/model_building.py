@@ -147,8 +147,12 @@ class ModelBuild:
         self.model.summary()
 
     """ 
-    train a model that reconstructs its own inputs (autoencoder)
-    the middle layer becomes the embedding
+    - train a model that reconstructs its own inputs (autoencoder)
+    - in each training step, the model compares the input with the output (reconstructed by the decoder)
+    - the parameters are updated to minimize reconstruction error
+    - the middle layer becomes the embedding (latent vector)
+    - takes the embedded vector as output for each anime
+    - input > encoder > embedding > decoder > output
     """
     def _training(self, texts):
         self.model.compile(optimizer=optimizers.Adam(1e-3), loss=self.loss_dict, loss_weights=self.loss_weights)
