@@ -65,7 +65,7 @@ class ModelBuild:
         encoder.save(os.path.join(self.filepath, "anime_encoder_tf"))
         joblib.dump(nbrs, os.path.join(self.filepath, "nbrs_cosine.joblib"))
         np.save(os.path.join(self.filepath, "all_embeddings.npy"), all_embeddings)
-        self.df[["title"]].to_csv(os.path.join(self.filepath, "titles.csv"), index=False)
+        self.df[["title", 'image_url', 'average_score', 'synopsis']].to_csv(os.path.join(self.filepath, "titles.csv"), index=False)
 
     def _parse_array_col(self, col):
         return np.vstack(self.df[col].values)

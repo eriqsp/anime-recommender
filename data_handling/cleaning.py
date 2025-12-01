@@ -18,9 +18,10 @@ class DataCleaner:
         self.df['text'] = self.df['text'].astype(str).str.encode('latin-1', errors='replace').str.decode('utf-8', errors='replace')
 
         cols = ['title', 'text', 'genres_multi', 'tags_multi', 'studios_multi']
+        aux_cols = ['image_url', 'average_score', 'synopsis']
         if self.add_numerical:
             cols += ['episodes', 'popularity']
-        return self.df[cols]
+        return self.df[cols + aux_cols]
 
     # transform values into multi-hot vectors; multi-hot vectors are more useful when dealing with neural networks later
     def _second_stage_df(self):
