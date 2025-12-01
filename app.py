@@ -19,6 +19,9 @@ n = st.slider("How many recommendations", 1, 20, 5)
 if st.button("Recommend"):
     try:
         df = get_recs(query, n)
+        if df.empty:
+            st.error('No results')
+            exit()
         for idx, row in df.iterrows():
             if not pd.isnull(row.get('average_score')):
                 subheader = f"{row['title']} — score {row.get('average_score', ''):.0f}"
