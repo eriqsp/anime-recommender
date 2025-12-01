@@ -15,14 +15,17 @@ all_embeddings = np.load(os.path.join(filepath, 'all_embeddings.npy'))
 nbrs = joblib.load(os.path.join(filepath, 'nbrs_cosine.joblib'))
 
 
-def get_recs(title, k=10):
+def get_recs(title, k, sort=False) -> pd.DataFrame:
     # find exact index
     try:
         idx = int(np.where(titles == title)[0][0])
     except Exception:
-        print("Title not found in dataset.")
-        return []
+        return pd.DataFrame()
     emb = all_embeddings[idx:idx+1]  # shape (1, dim)
     dists, inds = nbrs.kneighbors(emb, n_neighbors=k+1)
     rec_idx = [i for i in inds[0] if i != idx][:k]
-    return animes_df.iloc[rec_idx]
+
+    df = animes_df.iloc[rec_idx]
+    if sort:
+        df = df.sort_values(by=['average_score'], ascending=False, na_position='last')
+    return df
