@@ -32,14 +32,22 @@ if st.button("Search") or (query and st.session_state.get('submitted', False) is
             st.warning("No recommendations returned by get_recs().")
         else:
             for idx, row in df.iterrows():
-                if not pd.isnull(row.get('average_score')):
-                    subheader = f"{row['title']} — score {row.get('average_score', ''):.0f}"
-                else:
-                    subheader = f"{row['title']}"
-                st.subheader(subheader)
-                if row.get("image_url"):
-                    st.image(row["image_url"], width=200)
-                st.markdown(row.get("synopsis", ""), unsafe_allow_html=True)
+                st.markdown("<br></br>", unsafe_allow_html=True)
+                with st.container():
+                    st.markdown(
+                        f"""
+                        <div style="padding:15px; background:#1A1D23; border-radius:12px; margin-bottom:20px; border:1px solid #333;">
+                            <h3 style="margin-bottom:10px;">{row['title']}</h3>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+                    cols = st.columns([1, 3])
+                    with cols[0]:
+                        if row.get("image_url"):
+                            st.image(row["image_url"], width=150)
+                    with cols[1]:
+                        st.markdown(row.get("synopsis", ""), unsafe_allow_html=True)
 
 
 # TODO: fix examples side bar; works only at first interaction
