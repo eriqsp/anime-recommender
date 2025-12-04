@@ -1,19 +1,80 @@
-import pandas as pd
 import streamlit as st
 from analysis.recommender import get_recs, find_best_match
 
 
-# to run: streamlit run C:/Users/Erick/PycharmProjects/anime-recommender/app.py
-# TODO: enhance app layout: colors, font, etc
-# TODO: add streaming logo that indicates where to watch the show
+# to run: streamlit run app.py
+# TODO: add streaming logo that indicates where to watch the show (maybe add below anime title)
 # TODO: deployment
+
+
+st.set_page_config(page_title="Anime Recommender", layout="wide")
+
+st.markdown("""
+<style>
+.block-container {
+    padding-top: 1rem !important;
+    max-width: 1500px;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-container {
+    margin-bottom: 25px;
+}
+
+.anime-card {
+    background: #141414;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    width: 100%;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.anime-card * {
+    box-sizing: border-box;
+}
+
+.anime-card img {
+    width: 100%;
+    max-height: 350px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.anime-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.anime-synopsis {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-top: 6px;
+
+    height: 25%;
+    overflow-y: auto;
+}
+
+.anime-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 12px rgba(255,255,255,0.25);
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 st.title("Anime Recommender")
 
 query = st.text_input("Type an anime title", key='search', value="", placeholder='Type e.g. "naruto" then press Enter')
 k = st.number_input("How many recommendations", min_value=1, max_value=50, value=10, step=1)
-
 
 if st.button("Search") or (query and st.session_state.get('submitted', False) is False):
     matched_title = find_best_match(query)
@@ -31,23 +92,27 @@ if st.button("Search") or (query and st.session_state.get('submitted', False) is
         if df.empty:
             st.warning("No recommendations returned by get_recs().")
         else:
-            for idx, row in df.iterrows():
-                st.markdown("<br></br>", unsafe_allow_html=True)
-                with st.container():
+            st.markdown('<div class="horizontal-scroll">', unsafe_allow_html=True)
+
+            cols = st.columns(3)
+            for i, row in df.iterrows():
+                col = cols[i % 3]
+
+                with col:
                     st.markdown(
                         f"""
-                        <div style="padding:15px; background:#1A1D23; border-radius:12px; margin-bottom:20px; border:1px solid #333;">
-                            <h3 style="margin-bottom:10px;">{row['title']}</h3>
+                        <div class="card-container">
+                            <div class="anime-card">
+                                <img src="{row['image_url']}" />
+                                <div class="anime-title">{row['title']}</div>
+                                <div class="anime-synopsis">{row['synopsis']}</div>
+                            </div>
+                        </div>
                         """,
                         unsafe_allow_html=True
                     )
 
-                    cols = st.columns([1, 3])
-                    with cols[0]:
-                        if row.get("image_url"):
-                            st.image(row["image_url"], width=150)
-                    with cols[1]:
-                        st.markdown(row.get("synopsis", ""), unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
 
 
 # TODO: fix examples side bar; works only at first interaction

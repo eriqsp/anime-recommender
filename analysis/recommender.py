@@ -32,7 +32,7 @@ def get_recs(title, k, sort=False) -> pd.DataFrame:
     df = animes_df.iloc[rec_idx]
     if sort:
         df = df.sort_values(by=['average_score'], ascending=False, na_position='last')
-    return df
+    return df.reset_index(drop=True)
 
 
 def find_best_match(user_query: str):
