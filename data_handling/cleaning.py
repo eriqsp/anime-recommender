@@ -17,7 +17,7 @@ class DataCleaner:
 
         self.df['text'] = self.df['text'].astype(str).str.encode('latin-1', errors='replace').str.decode('utf-8', errors='replace')
 
-        cols = ['title', 'text', 'genres_multi', 'tags_multi', 'studios_multi']
+        cols = ['item_id', 'title', 'text', 'genres_multi', 'tags_multi', 'studios_multi']
         aux_cols = ['image_url', 'average_score', 'synopsis']
         if self.add_numerical:
             cols += ['episodes', 'popularity']
