@@ -9,7 +9,7 @@ import os
 load_dotenv()
 filepath = os.getenv('FILEPATH')
 input_file = os.path.join(filepath, 'titles.csv')
-output_file = os.path.join(filepath, 'streaming_data.csv')
+output_file = os.path.join(filepath, 'titles.csv')
 temp_checkpoint_file = os.path.join(filepath, 'streaming_data_checkpoint.csv')
 
 # API endpoints

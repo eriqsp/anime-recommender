@@ -3,7 +3,6 @@ from analysis.recommender import get_recs, find_best_match
 
 
 # to run: streamlit run app.py
-# TODO: add streaming logo that indicates where to watch the show (maybe add below anime title)
 # TODO: deployment
 
 
@@ -22,6 +21,13 @@ st.markdown("""
 
 .card-container {
     margin-bottom: 25px;
+}
+
+.streaming-logos-container {
+    display: flex;
+    align-items: center; 
+    margin-top: 5px; 
+    margin-bottom: 5px; 
 }
 
 .anime-card {
@@ -105,6 +111,7 @@ if st.button("Search") or (query and st.session_state.get('submitted', False) is
                             <div class="anime-card">
                                 <img src="{row['image_url']}" />
                                 <div class="anime-title">{row['title']}</div>
+                                {row['streaming_logos']}
                                 <div class="anime-synopsis">{row['synopsis']}</div>
                             </div>
                         </div>
