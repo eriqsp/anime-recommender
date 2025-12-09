@@ -1,5 +1,3 @@
-from dotenv import load_dotenv
-import os
 import numpy as np
 import pandas as pd
 import joblib
@@ -16,18 +14,15 @@ streaming_logo_map = {
     "HIDIVE": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Hidive_text_logo.svg"
 }
 
-load_dotenv()
-filepath = os.getenv('FILEPATH')
-
-animes_df = pd.read_csv(os.path.join(filepath, 'titles.csv'))
+animes_df = pd.read_csv('data/titles.csv')
 
 titles = animes_df['title'].to_numpy()
 titles_list = list(titles)
 titles_lower = [t.lower() for t in titles_list]
 lower_to_index = {t.lower(): i for i, t in enumerate(titles_list)}
 
-all_embeddings = np.load(os.path.join(filepath, 'all_embeddings.npy'))
-nbrs = joblib.load(os.path.join(filepath, 'nbrs_cosine.joblib'))
+all_embeddings = np.load('data/all_embeddings.npy')
+nbrs = joblib.load('data/nbrs_cosine.joblib')
 
 
 # get recommendations
