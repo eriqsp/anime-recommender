@@ -2,8 +2,8 @@ import streamlit as st
 from analysis.recommender import get_recs, find_best_match
 
 
-# to run: streamlit run app.py
-# TODO: deployment
+# app: https://anime-flow.streamlit.app/
+# to run locally: streamlit run app.py
 
 
 st.set_page_config(page_title="Anime Recommender", layout="wide")
@@ -120,22 +120,3 @@ if st.button("Search") or (query and st.session_state.get('submitted', False) is
                     )
 
             st.markdown('</div>', unsafe_allow_html=True)
-
-
-# TODO: fix examples side bar; works only at first interaction
-# st.sidebar.header("Try examples")
-# examples = ["NARUTO", "Shingeki no Kyojin", "Fullmetal Alchemist"]
-# for ex in examples:
-#     if st.sidebar.button(ex):
-#         matched_title = find_best_match(ex)
-#         df = get_recs(matched_title, k=10)
-#         st.write(f"### Recommendations for {matched_title}")
-#         for idx, row in df.iterrows():
-#             if not pd.isnull(row.get('average_score')):
-#                 subheader = f"{row['title']} — score {row.get('average_score', ''):.0f}"
-#             else:
-#                 subheader = f"{row['title']}"
-#             st.subheader(subheader)
-#             if row.get("image_url"):
-#                 st.image(row["image_url"], width=200)
-#             st.markdown(row.get("synopsis", ""), unsafe_allow_html=True)
