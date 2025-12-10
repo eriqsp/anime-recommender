@@ -55,4 +55,15 @@ This is how the app looks like when you search an anime:
 You can change how many recommendations it shows. Each card contains the anime title, the streaming services where it is available on and the synopsis.
 
 
-## 
+## Why it works?
+Here I'm going to dive a little deeper into what the model is actually doing.
+
+It is a neural network constructed with TensorFlow. The neural network here is called Autoencoder. The autoencoder trains a model that reconstructs its own inputs.
+
+![img.png](data/variational-autoencoder-neural-network.png)
+*Visual depiction of the architecture of a standard autoencoder neural network. Source: IBM*
+
+The input data and the output the data are the same, in this case being the features extracted for the animes (i.e. title, synopsis, genre, etc.).
+In each training step, the model compares the input with the output (reconstructed by the decoder). Then, the parameters are updated to minimize reconstruction error.
+
+The middle layer (bottleneck) is the embedded vector - a compressed vector that summarizes all the anime features. Basically, similar animes will have similar vector. Then I use the algorithm K-Nearest Neighbors (KNN) to find the K most similar vectors to the one being searched.
